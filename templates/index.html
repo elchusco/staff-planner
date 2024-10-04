@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnel Planning</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <h1>Planification Hebdomadaire du Personnel</h1>
+
+    <form id="planning-form" method="POST" action="/generate">
+        <label for="off_days">Nombre de jours non ouvrés :</label>
+        <input type="number" id="off_days" name="off_days" min="0" max="7" required>
+
+        <label for="min_staff_count">Nombre de personnes présentes chaque demi-journée :</label>
+        <input type="number" id="min_staff_count" name="min_staff_count" min="1" required>
+
+        <label for="full_time_staff">Nombre de titulaires (45h/semaine) :</label>
+        <input type="number" id="full_time_staff" name="full_time_staff" min="0" required>
+
+        <button type="submit">Générer la planification</button>
+    </form>
+
+    <h2>Visualisation de la répartition</h2>
+    <canvas id="staffChart" width="400" height="200"></canvas>
+
+    <script src="/static/js/chart.js"></script>
+    <script>
+        // Code JavaScript pour gérer l'affichage du graphique
+        const ctx = document.getElementById('staffChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Lundi Matin', 'Lundi Après-midi', 'Mardi Matin', 'Mardi Après-midi',
+                         'Mercredi Matin', 'Mercredi Après-midi', 'Jeudi Matin', 'Jeudi Après-midi',
+                         'Vendredi Matin', 'Vendredi Après-midi'],
+                datasets: [{
+                    label: 'Nombre de personnes présentes',
+                    data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Les données seront mises à jour via le backend
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
